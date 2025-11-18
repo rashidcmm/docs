@@ -15,7 +15,7 @@
         "groups": [
           {
             "group": "Guides",
-            "pages": ["Text-to-Speech-Guide"]
+            "pages": ["Authentication & First API Call"]
           }
         ]
       }

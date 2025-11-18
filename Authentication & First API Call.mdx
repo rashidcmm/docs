@@ -1,0 +1,98 @@
+# Authentication & First API Call
+
+All Waves API requests require authentication using API keys. Your API key identifies your account, tracks usage, and enforces rate limits and credit quotas.
+
+## Getting Your API Key
+
+1. Sign up at [Waves Dashboard](https://waves.smallest.ai)
+2. Navigate to API Keys section
+3. Generate a new API key
+4. Store it securely - never expose it in client-side code or public repositories
+
+## Authentication Method
+
+Include your API key in the `Authorization` header using Bearer token format:
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Your First API Call
+
+Test your authentication by fetching available voices:
+
+<CodeGroup>
+```bash cURL
+curl https://waves-api.smallest.ai/api/v1/lightning/get_voices \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json"
+```
+
+```python Python
+from smallestai.waves import WavesClient
+
+# Initialize client
+client = WavesClient(api_key="YOUR_API_KEY")
+
+# Get available voices
+voices = client.get_voices(model='lightning')
+print(f"Available voices: {voices}")
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://waves-api.smallest.ai/api/v1/lightning/get_voices',
+  {
+    headers: {
+      'Authorization': 'Bearer YOUR_API_KEY',
+      'Content-Type': 'application/json'
+    }
+  }
+);
+
+const voices = await response.json();
+console.log('Available voices:', voices);
+```
+</CodeGroup>
+
+## Sample Response
+
+```json
+{
+  "voices": [
+    {
+      "voice_id": "emily",
+      "name": "Emily",
+      "language": "en",
+      "gender": "female"
+    },
+    {
+      "voice_id": "james",
+      "name": "James", 
+      "language": "en",
+      "gender": "male"
+    }
+  ]
+}
+```
+
+## API Key Security
+
+| ✅ Do | ❌ Don't |
+|-------|----------|
+| Store in environment variables | Hardcode in source code |
+| Use server-side only | Expose in browsers/mobile apps |
+| Rotate keys periodically | Commit to Git repositories |
+| Keep separate keys per environment | Share keys with others |
+
+## Rate Limits & Quotas
+
+Your API key enforces:
+- **Rate Limits**: Maximum requests per time period
+- **Credit Quota**: Total usage credits available
+
+Check your usage in the [Waves Dashboard](https://waves.smallest.ai/dashboard).
+
+<Note>
+**Pro Tip:** Set your API key as an environment variable (`SMALLEST_API_KEY`) to avoid accidentally committing it to version control.
+</Note>
