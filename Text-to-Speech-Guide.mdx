@@ -1,0 +1,101 @@
+# Text-To-Speech with Waves
+
+Convert text to natural-sounding speech using Waves' lightning-fast TTS API. Generate high-quality audio in multiple voices and languages with minimal latency.
+
+## Quick Start
+
+### Endpoint
+```
+POST https://api.smallest.ai/v1/tts/synthesize
+```
+
+### Authentication
+Include your API key in the request headers:
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Sample Request
+
+<CodeGroup>
+```python Python
+from smallest import Smallest
+
+client = Smallest(api_key="YOUR_API_KEY")
+
+# Synthesize speech
+audio_data = client.tts.synthesize(
+    text="Hello! Welcome to Waves TTS.",
+    voice_id="emily",
+    model="lightning",
+    output_format="wav"
+)
+
+# Save to file
+with open("output.wav", "wb") as f:
+    f.write(audio_data)
+```
+
+```bash cURL
+curl -X POST https://api.smallest.ai/v1/tts/synthesize \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Hello! Welcome to Waves TTS.",
+    "voice_id": "emily",
+    "model": "lightning",
+    "output_format": "wav"
+  }' \
+  --output output.wav
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.smallest.ai/v1/tts/synthesize', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    text: 'Hello! Welcome to Waves TTS.',
+    voice_id: 'emily',
+    model: 'lightning',
+    output_format: 'wav'
+  })
+});
+
+const audioBlob = await response.blob();
+```
+</CodeGroup>
+
+## Key Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `text` | string | *required* | Text to convert to speech |
+| `voice_id` | string | `"emily"` | Voice identifier |
+| `model` | string | `"lightning"` | Model selection: `lightning` (fast) or `lightning-large` (quality) |
+| `output_format` | string | `"wav"` | Audio format: `wav`, `mp3`, `pcm`, `mulaw` |
+| `sample_rate` | integer | `24000` | Audio sample rate in Hz |
+| `speed` | float | `1.0` | Speech speed multiplier (0.5 = slower, 2.0 = faster) |
+
+## Response
+
+The API returns raw audio bytes in your specified format. For successful requests, you'll receive:
+- **Content-Type**: `audio/wav` (or your chosen format)
+- **Body**: Binary audio data ready to play or save
+
+<Note>
+**Pro Tip:** For custom voices, use `model="lightning-large"` to access advanced parameters like `consistency`, `similarity`, and `enhancement` for fine-tuned control over speech quality.
+</Note>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Explore Voices" icon="microphone" href="/voices">
+    Browse available voices
+  </Card>
+  <Card title="Streaming TTS" icon="tower-broadcast" href="/streaming">
+    Generate audio in real-time
+  </Card>
+</CardGroup>
